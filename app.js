@@ -32,7 +32,7 @@ router.post('/buy', async (ctx) => {
 	const browser = await puppeteer.launch({
 		headless: true,
 		userDataDir: './temp-user-data',
-		executablePath: '/app/.apt/usr/bin/google-chrome-stable',
+		executablePath: '/app/google-chrome',
 		args: [
 		'--no-sandbox', '--disable-setuid-sandbox',
 		'--disable-infobars',
