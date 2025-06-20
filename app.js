@@ -21,6 +21,7 @@ router.get('/teszt', async () => {
 // Router és szerver indítása
 app.use(router.routes()).use(router.allowedMethods());
 
-app.listen(3000, () => {
-  console.log('Koa szerver fut: http://localhost:3000/');
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Koa szerver fut: http://localhost:${PORT}/`);
 });
