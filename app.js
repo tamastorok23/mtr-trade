@@ -14,8 +14,9 @@ app.use(bodyParser());
 
 // Buy order indítása
 // Input: { symbol: String, quantity: Number, price?: Number }
-router.get('/teszt', async () => {
+router.get('/teszt', async (ctx) => {
   console.log('teszt oldal megnyitva');
+  ctx.body = 'Teszt OK!';
 });
 
 // Router és szerver indítása
