@@ -19,21 +19,47 @@ router.get('/teszt', async (ctx) => {
 });
 
 router.post('/buy', async (ctx) => {
-  console.log('buy oldal megnyitva');
-  
-  const { username, password, symbol, lot } = ctx.request.body;
+	console.log('buy oldal megnyitva');
 
-  console.log('Buy oldal megnyitva');
-  console.log(`Felhasználó: ${username}`);
-  console.log(`Jelszó: ${password}`);
-  console.log(`Szimbólum: ${symbol}`);
-  console.log(`Mennyiség: ${lot}`);
+	const { username, password, symbol, lot } = ctx.request.body;
+
+	console.log('Buy oldal megnyitva');
+	console.log(`Felhasználó: ${username}`);
+	console.log(`Jelszó: ${password}`);
+	console.log(`Szimbólum: ${symbol}`);
+	console.log(`Mennyiség: ${lot}`);
   
-  ctx.body = {
-    status: 'success',
-    message: 'Buy kérés fogadva',
-    data: { username, symbol, lot }
-  };
+	const browser = await puppeteer.launch({
+		headless: true,
+		userDataDir: './temp-user-data',
+		args: [
+		'--no-sandbox', '--disable-setuid-sandbox',
+		'--disable-infobars',
+		'--disable-blink-features=AutomationControlled',
+		'--disable-password-generation',
+		'--disable-save-password-bubble',
+		'--disable-features=PasswordManagerEnableAccountStorage,PasswordLeakDetection',
+		'--password-store=basic'
+		],
+		defaultViewport: null
+	});
+
+	const context = browser.defaultBrowserContext();
+	await context.overridePermissions('https://mtr.gooeytrade.com', []);
+
+	const page = await browser.newPage();
+
+	await page.goto('https://mtr.gooeytrade.com/login', {
+		waitUntil: 'networkidle2'
+	});
+	
+	console.log('Oldal betöltve.');
+  
+	ctx.body = {
+		status: 'success',
+		message: 'Buy kérés fogadva',
+		data: { username, symbol, lot }
+	};
 });
 
 // Router és szerver indítása
