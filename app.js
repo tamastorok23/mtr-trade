@@ -6,7 +6,6 @@ const puppeteer = require('puppeteer-extra');
 const StealthPlugin = require('puppeteer-extra-plugin-stealth');
 puppeteer.use(StealthPlugin());
 
-
 const app = new Koa();
 const router = new Router();
 
@@ -17,6 +16,24 @@ app.use(bodyParser());
 router.get('/teszt', async (ctx) => {
   console.log('teszt oldal megnyitva');
   ctx.body = 'Teszt OK!';
+});
+
+router.post('/buy', async (ctx) => {
+  console.log('buy oldal megnyitva');
+  
+  const { username, password, symbol, lot } = ctx.request.body;
+
+  console.log('Buy oldal megnyitva');
+  console.log(`Felhasználó: ${username}`);
+  console.log(`Jelszó: ${password}`);
+  console.log(`Szimbólum: ${symbol}`);
+  console.log(`Mennyiség: ${lot}`);
+  
+  ctx.body = {
+    status: 'success',
+    message: 'Buy kérés fogadva',
+    data: { username, symbol, lot }
+  };
 });
 
 // Router és szerver indítása
